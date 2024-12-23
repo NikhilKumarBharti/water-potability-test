@@ -39,7 +39,7 @@ def save_data(df: pd.DataFrame, filepath: str)-> None:
 
 def main():
     try:
-        data_filepath = r'D:\MLData\ML_Pipe\water_potability.csv'
+        data_filepath = r'C:\Users\nikhi\water-potability-prediction\water_potability.csv'
         params_path = 'params.yaml'
         raw_data_path = os.path.join('data','raw')
 
