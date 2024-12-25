@@ -5,15 +5,15 @@ stages:
     deps:
     - path: src/data/data_collection.py
       hash: md5
-      md5: d485a81ddf2d2cce3ed33891536a88d3
-      size: 2030
+      md5: 578d8f4e09d34e5512ee14fc48eb6691
+      size: 1991
     params:
       params.yaml:
-        data_collection.test_size: 0.25
+        data_collection.test_size: 0.2
     outs:
     - path: data/raw
       hash: md5
-      md5: f213c7cc514793018e69532b85e72729.dir
+      md5: c0c2d65c14a603e91e029fda3c344a5c.dir
       size: 522262
       nfiles: 2
   pre_processing:
@@ -21,7 +21,7 @@ stages:
     deps:
     - path: data/raw
       hash: md5
-      md5: f213c7cc514793018e69532b85e72729.dir
+      md5: c0c2d65c14a603e91e029fda3c344a5c.dir
       size: 522262
       nfiles: 2
     - path: src/data/data_prep.py
@@ -31,16 +31,16 @@ stages:
     outs:
     - path: data/processed
       hash: md5
-      md5: 6ec0e2eb268ee646665b93cccf4bd961.dir
-      size: 546865
+      md5: e34c84b2d0f2a75442271cd6c5779b7c.dir
+      size: 546895
       nfiles: 2
   model_building:
     cmd: python src/model/model_building.py
     deps:
     - path: data/processed
       hash: md5
-      md5: 6ec0e2eb268ee646665b93cccf4bd961.dir
-      size: 546865
+      md5: e34c84b2d0f2a75442271cd6c5779b7c.dir
+      size: 546895
       nfiles: 2
     - path: src/model/model_building.py
       hash: md5
@@ -48,25 +48,40 @@ stages:
       size: 2023
     params:
       params.yaml:
-        model_building.n_estimators: 250
+        model_building.n_estimators: 1000
     outs:
     - path: models/model.pkl
       hash: md5
-      md5: ac92ba87308f3b7f51415e4bd0d69d7d
-      size: 17342729
+      md5: b633862af879df80bf14f131e698b543
+      size: 73780548
   model_evaluation:
     cmd: python src/model/model_eval.py
     deps:
     - path: models/model.pkl
       hash: md5
-      md5: ac92ba87308f3b7f51415e4bd0d69d7d
-      size: 17342729
+      md5: b633862af879df80bf14f131e698b543
+      size: 73780548
     - path: src/model/model_eval.py
       hash: md5
-      md5: e11fe06d0cd88553df0214728b8b369c
-      size: 3011
+      md5: 77f4d0ea0dd4649ac91e521450d91f59
+      size: 4982
     outs:
     - path: reports/metrics.json
       hash: md5
-      md5: d19ca4b33fa406a4b85feb110a4d6843
-      size: 151
+      md5: 9d246f95f48ef5f95d1fcd9e169c4edf
+      size: 138
+    - path: reports/run_info.json
+      hash: md5
+      md5: dda16c75a356ed783c603000b4b83309
+      size: 87
+  model_registration:
+    cmd: python src/model/model_reg.py
+    deps:
+    - path: reports/run_info.json
+      hash: md5
+      md5: dda16c75a356ed783c603000b4b83309
+      size: 87
+    - path: src/model/model_reg.py
+      hash: md5
+      md5: f70053f076e33a7f41378f3ed6ad02ea
+      size: 1349
